@@ -115,29 +115,30 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    if(filePath == ""){
+    if(filePath.isEmpty()){
+        // 首次保存：获取保存路径
         QString filename = QFileDialog::getSaveFileName(this, "保存文件", ".",
                                                         tr("Text files (*.txt)"));
-        QFile file(filename);
-        if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            QMessageBox::warning(this, "...", "打开保存文件失败");
+        if (filename.isEmpty()) { // 处理用户取消对话框的情况
             return;
         }
-        file.close();
         filePath = filename;
     }
 
+    // 打开文件并写入内容（核心修复：确保文件正确打开）
     QFile file(filePath);
-
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, "...", "保存文件失败：" + file.errorString());
+        return;
+    }
 
     QTextStream out(&file);
     QString text = ui->textEdit->toPlainText();
-    out<<text;
+    out << text;
     file.flush();
     file.close();
 
     this->setWindowTitle(QFileInfo(filePath).absoluteFilePath());
-
     textChanged = false;
 }
 

@@ -1,0 +1,10 @@
+void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
+{
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), Qt::lightGray);
+ ui->setupUi(this);
+
+    textChanged = false;
+    on_actionNew_triggered();
+123454
+}
