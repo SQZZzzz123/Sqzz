@@ -278,7 +278,10 @@ void MainWindow::on_actionFontBackgroundColor_triggered()
 
 void MainWindow::on_actionEditorbackgroundcolor_triggered()
 {
-
+    QColor color = QColorDialog::getColor(Qt::white, this, "选择编辑器背景色");
+    if (color.isValid()) {
+        ui->textEdit->setStyleSheet(QString("QPlainTextEdit {background-color: %1}").arg(color.name()));
+    }
 }
 
 
